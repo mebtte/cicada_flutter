@@ -1,3 +1,4 @@
+import 'package:cicada/pages/server_management.dart';
 import 'package:cicada/states/server.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +9,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentServer = context.watch<ServerState>().currentServer;
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
+    return MaterialApp(
+      home: currentServer == null
+          ? PageServerManagement()
+          : Scaffold(body: Center(child: Text('Hello World!'))),
     );
   }
 }

@@ -3,13 +3,58 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/storage.dart';
 import 'dart:convert';
 
+class User {
+  String token;
+  String? avatar;
+  int createMusicMaxAmount;
+  String id;
+  bool twoFAEnabled;
+  String username;
+  String nickname;
+
+  User({
+    required this.token,
+    required this.avatar,
+    required this.createMusicMaxAmount,
+    required this.id,
+    required this.twoFAEnabled,
+    required this.username,
+    required this.nickname,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    token: json['token'],
+    avatar: json['avatar'],
+    createMusicMaxAmount: json['createMusicMaxAmount'],
+    id: json['id'],
+    twoFAEnabled: json['twoFAEnabled'],
+    username: json['username'],
+    nickname: json['nickname'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'token': token,
+    'avatar': avatar,
+    'createMusicMaxAmount': createMusicMaxAmount,
+    'id': id,
+    'twoFAEnabled': twoFAEnabled,
+    'username': username,
+    'nickname': nickname,
+  };
+}
+
 class Server {
-  final String origin;
+  String origin;
+  String hostname;
+  String version;
 
-  Server({required this.origin});
+  Server({required this.origin, required this.hostname, required this.version});
 
-  factory Server.fromJson(Map<String, dynamic> json) =>
-      Server(origin: json['origin']);
+  factory Server.fromJson(Map<String, dynamic> json) => Server(
+    origin: json['origin'],
+    hostname: json['hostname'],
+    version: json['version'],
+  );
 
   Map<String, dynamic> toJson() {
     return {'origin': origin};
@@ -40,5 +85,6 @@ class ServerState extends ChangeNotifier {
       this.serverList = serverList;
       this.selectedServerOrigin = selectedServerOrigin;
     }
+    notifyListeners();
   }
 }
