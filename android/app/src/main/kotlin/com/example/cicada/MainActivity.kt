@@ -1,4 +1,4 @@
-package com.example.cicada
+package com.mebtte.cicada
 
 import io.flutter.embedding.android.FlutterActivity
 
