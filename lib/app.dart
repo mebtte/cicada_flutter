@@ -1,4 +1,4 @@
-import 'package:cicada/pages/server_management.dart';
+import 'package:cicada/pages/server_management/index.dart';
 import 'package:cicada/states/server.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
