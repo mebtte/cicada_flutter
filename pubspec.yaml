@@ -1,6 +1,6 @@
 name: cicada
-description: "A new Flutter project."
-publish_to: 'none'
+description: "Client for cicada."
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -14,6 +14,7 @@ dependencies:
   just_audio: ^0.10.4
   provider: ^6.1.5
   shared_preferences: ^2.5.3
+  window_manager: ^0.5.1
 
 dev_dependencies:
   flutter_test:

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.mebtte" "\0"
-            VALUE "FileDescription", "cicada" "\0"
+            VALUE "FileDescription", "Cicada" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "cicada" "\0"
+            VALUE "InternalName", "Cicada" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.mebtte. All rights reserved." "\0"
-            VALUE "OriginalFilename", "cicada.exe" "\0"
-            VALUE "ProductName", "cicada" "\0"
+            VALUE "OriginalFilename", "Cicada.exe" "\0"
+            VALUE "ProductName", "Cicada" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
