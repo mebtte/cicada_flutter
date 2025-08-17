@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   audio_service: ^0.18.18
+  dio: ^5.9.0
   flutter:
     sdk: flutter
   get_it: ^8.2.0

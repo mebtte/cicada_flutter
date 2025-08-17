@@ -47,17 +47,33 @@ class Server {
   String origin;
   String hostname;
   String version;
+  List<User> users;
+  String? selectedUserId;
 
-  Server({required this.origin, required this.hostname, required this.version});
+  Server({
+    required this.origin,
+    required this.hostname,
+    required this.version,
+    required this.users,
+    required this.selectedUserId,
+  });
 
   factory Server.fromJson(Map<String, dynamic> json) => Server(
     origin: json['origin'],
     hostname: json['hostname'],
     version: json['version'],
+    users: json['users'],
+    selectedUserId: json['selectedUserId'],
   );
 
   Map<String, dynamic> toJson() {
-    return {'origin': origin};
+    return {
+      'origin': origin,
+      'hostname': hostname,
+      'version': version,
+      'users': users,
+      'selectedUserId': selectedUserId,
+    };
   }
 }
 
