@@ -1,3 +1,4 @@
+import 'package:cicada/states/server.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -102,11 +103,24 @@ class _ServerManagementState extends State<ServerManagement> {
                               );
                               if (response.statusCode != 200) {
                                 throw Exception(
-                                  "The origin responses with code \"${response.statusCode}\"",
+                                  "The origin responsed with code \"${response.statusCode}\"",
                                 );
                               }
                               final responseData = MetadataResponse.fromJson(
                                 response.data,
+                              );
+                              if (responseData.code != "success") {
+                                throw Exception(
+                                  "The origin responsed with code \"${responseData.code}\"",
+                                );
+                              }
+                              serverState.addServer(
+                                Server(
+                                  origin: origin,
+                                  hostname: responseData.data.hostname,
+                                  version: responseData.data.version,
+                                  users: <User>[],
+                                ),
                               );
                             } catch (exception) {
                               ScaffoldMessenger.of(context).showSnackBar(

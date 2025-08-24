@@ -1,3 +1,4 @@
+import 'package:cicada/extensions/list.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/storage.dart';
@@ -48,22 +49,21 @@ class Server {
   String hostname;
   String version;
   List<User> users;
-  String? selectedUserId;
 
   Server({
     required this.origin,
     required this.hostname,
     required this.version,
     required this.users,
-    required this.selectedUserId,
   });
 
   factory Server.fromJson(Map<String, dynamic> json) => Server(
     origin: json['origin'],
     hostname: json['hostname'],
     version: json['version'],
-    users: json['users'],
-    selectedUserId: json['selectedUserId'],
+    users: (json['users'] as List<dynamic>)
+        .map((json) => User.fromJson(json))
+        .toList(),
   );
 
   Map<String, dynamic> toJson() {
@@ -72,7 +72,6 @@ class Server {
       'hostname': hostname,
       'version': version,
       'users': users,
-      'selectedUserId': selectedUserId,
     };
   }
 }
@@ -80,6 +79,7 @@ class Server {
 class ServerState extends ChangeNotifier {
   List<Server> serverList = [];
   String? selectedServerOrigin;
+  String? selectedUserId;
 
   Server? get currentServer => selectedServerOrigin == null
       ? null
@@ -87,20 +87,50 @@ class ServerState extends ChangeNotifier {
           (server) => server.origin == selectedServerOrigin,
         );
 
+  User? get currentUser {
+    final currentServer = this.currentServer;
+    return currentServer?.users.firstWhereOrNull(
+      (user) => user.id == serverState.selectedUserId,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'selectedServerOrigin': selectedServerOrigin,
+      'selectedUserId': selectedUserId,
+      'serverList': jsonEncode(serverList),
+    };
+  }
+
   Future<void> initialize() async {
     final preference = await SharedPreferences.getInstance();
-    final serverListString = preference.getString(StorageKey.SERVER_LIST);
-    final selectedServerOrigin = preference.getString(
-      StorageKey.SELECTED_SERVER_ORIGIN,
-    );
-    if (serverListString != null) {
-      final List<Server> serverList =
-          (jsonDecode(serverListString) as List<Map<String, dynamic>>)
-              .map((json) => Server.fromJson(json))
-              .toList();
+    final serverString = preference.getString(StorageKey.SERVER);
+    if (serverString != null) {
+      final Map<String, dynamic> server = jsonDecode(serverString);
+      final undecodedServerList =
+          jsonDecode(server['serverList']) as List<dynamic>;
+      final serverList = undecodedServerList
+          .map((json) => Server.fromJson(json))
+          .toList();
       this.serverList = serverList;
-      this.selectedServerOrigin = selectedServerOrigin;
+      selectedServerOrigin = server['selectedServerOrigin'];
+      selectedUserId = server['selectedUserId'];
     }
     notifyListeners();
   }
+
+  void addServer(Server server) {
+    serverList.add(server);
+    selectedServerOrigin = server.origin;
+    notifyListeners();
+  }
+
+  void saveOnChange() {
+    addListener(() async {
+      final preference = await SharedPreferences.getInstance();
+      preference.setString(StorageKey.SERVER, jsonEncode(this));
+    });
+  }
 }
+
+final serverState = ServerState();

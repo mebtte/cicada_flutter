@@ -18,14 +18,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentServer = context.watch<ServerState>().currentServer;
-    final currentUser = currentServer?.users.firstWhere(
-      (user) => user.id == currentServer.selectedUserId,
-    );
+    final serverState = context.watch<ServerState>();
     return MaterialApp(
-      home: currentServer == null
+      home: serverState.currentServer == null
           ? ServerManagement()
-          : currentUser == null
+          : serverState.currentUser == null
           ? UserManagement()
           : AppContent(),
     );

@@ -20,8 +20,8 @@ void main() async {
   var audioHandler = await AudioService.init(builder: () => MyAudioHandler());
   getIt.registerSingleton(audioHandler);
 
-  final serverState = ServerState();
   await serverState.initialize();
+  serverState.saveOnChange();
 
   runApp(
     MultiProvider(
