@@ -71,7 +71,7 @@ class Server {
       'origin': origin,
       'hostname': hostname,
       'version': version,
-      'users': users,
+      'users': users.map((user) => user.toJson()).toList(),
     };
   }
 }
@@ -81,18 +81,13 @@ class ServerState extends ChangeNotifier {
   String? selectedServerOrigin;
   String? selectedUserId;
 
-  Server? get currentServer => selectedServerOrigin == null
-      ? null
-      : serverList.firstWhere(
-          (server) => server.origin == selectedServerOrigin,
-        );
+  Server? get currentServer => serverList.firstWhereOrNull(
+    (server) => server.origin == selectedServerOrigin,
+  );
 
-  User? get currentUser {
-    final currentServer = this.currentServer;
-    return currentServer?.users.firstWhereOrNull(
-      (user) => user.id == serverState.selectedUserId,
-    );
-  }
+  User? get currentUser => currentServer?.users.firstWhereOrNull(
+    (user) => user.id == selectedUserId,
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -122,6 +117,33 @@ class ServerState extends ChangeNotifier {
   void addServer(Server server) {
     serverList.add(server);
     selectedServerOrigin = server.origin;
+    notifyListeners();
+  }
+
+  void useServer(String origin) {
+    selectedServerOrigin = origin;
+    notifyListeners();
+  }
+
+  void reselectServer() {
+    selectedUserId = null;
+    selectedServerOrigin = null;
+    notifyListeners();
+  }
+
+  void addUser(User user) {
+    currentServer?.users.add(user);
+    selectedUserId = user.id;
+    notifyListeners();
+  }
+
+  void useUser(String id) {
+    selectedUserId = id;
+    notifyListeners();
+  }
+
+  void reselectUser() {
+    selectedUserId = null;
     notifyListeners();
   }
 
