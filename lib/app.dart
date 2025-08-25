@@ -1,5 +1,5 @@
-import 'package:cicada/pages/server_management/index.dart';
-import 'package:cicada/pages/user_management/index.dart';
+import 'package:cicada/server_management/index.dart';
+import 'package:cicada/user_management/index.dart';
 import 'package:cicada/states/server.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

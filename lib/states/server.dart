@@ -131,6 +131,13 @@ class ServerState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearServers() {
+    selectedUserId = null;
+    selectedServerOrigin = null;
+    serverList = [];
+    notifyListeners();
+  }
+
   void addUser(User user) {
     currentServer?.users.add(user);
     selectedUserId = user.id;

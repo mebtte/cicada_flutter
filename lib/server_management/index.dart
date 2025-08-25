@@ -1,37 +1,9 @@
 import 'dart:collection';
-
 import 'package:cicada/extensions/list.dart';
+import 'package:cicada/server/base/get_metadata.dart';
 import 'package:cicada/states/server.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-final _dio = Dio();
-
-class Metadata {
-  final String hostname;
-  final String version;
-
-  Metadata({required this.hostname, required this.version});
-
-  factory Metadata.fromJson(Map<String, dynamic> json) {
-    return Metadata(hostname: json['hostname'], version: json['version']);
-  }
-}
-
-class MetadataResponse {
-  final String code;
-  final Metadata data;
-
-  MetadataResponse({required this.code, required this.data});
-
-  factory MetadataResponse.fromJson(Map<String, dynamic> json) {
-    return MetadataResponse(
-      code: json['code'],
-      data: Metadata.fromJson(json['data']),
-    );
-  }
-}
 
 typedef ServerEntry = DropdownMenuEntry<Server>;
 
@@ -80,6 +52,10 @@ class _ServerManagementState extends State<ServerManagement> {
                 ),
               ),
             ),
+          ElevatedButton(
+            onPressed: () => serverState.clearServers(),
+            child: Text("Clear servers"),
+          ),
           TextField(
             readOnly: loading,
             controller: inputController,
@@ -122,27 +98,12 @@ class _ServerManagementState extends State<ServerManagement> {
                       loading = true;
                     });
                     try {
-                      final response = await _dio.get(
-                        "$origin/base/metadata?__lang=en",
-                      );
-                      if (response.statusCode != 200) {
-                        throw Exception(
-                          "The origin responsed with code \"${response.statusCode}\"",
-                        );
-                      }
-                      final responseData = MetadataResponse.fromJson(
-                        response.data,
-                      );
-                      if (responseData.code != "success") {
-                        throw Exception(
-                          "The origin responsed with code \"${responseData.code}\"",
-                        );
-                      }
+                      final metadata = await getMetadata(origin);
                       serverState.addServer(
                         Server(
                           origin: origin,
-                          hostname: responseData.data.hostname,
-                          version: responseData.data.version,
+                          hostname: metadata.hostname,
+                          version: metadata.version,
                           users: <User>[],
                         ),
                       );
