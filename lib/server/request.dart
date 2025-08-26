@@ -35,13 +35,13 @@ Future<dynamic> handleResponse(Response<dynamic> response) async {
 }
 
 Future<dynamic> httpGet<Data>({
-  required String origin,
   required String path,
   Map<String, String>? query,
   bool withToken = false,
+  String? origin,
 }) async {
   final response = await dio.get(
-    '$origin$path',
+    '${origin ?? serverState.currentServer!.origin}$path',
     queryParameters: query,
     options: Options(headers: getHeader(withToken)),
   );

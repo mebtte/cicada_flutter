@@ -1,4 +1,6 @@
+import 'package:cicada/server/base/get_captcha.dart';
 import 'package:cicada/states/server.dart';
+import 'package:cicada/widgets/captcha.dart';
 import 'package:flutter/material.dart';
 
 class UserManagement extends StatefulWidget {
@@ -62,6 +64,21 @@ class _UserManagementState extends State<UserManagement> {
                 );
                 return;
               }
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => SizedBox(
+                  width: double.infinity,
+                  child: Center(
+                    child: CaptchaWidget(
+                      onContinue:
+                          ({required Captcha captcha, required String input}) {
+                            print(captcha);
+                            print(input);
+                          },
+                    ),
+                  ),
+                ),
+              );
             },
             child: Text("Login"),
           ),
