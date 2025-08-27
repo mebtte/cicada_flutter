@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart'
+    show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:audio_service/audio_service.dart';
 import 'package:cicada/window_manager.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,12 @@ final getIt = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+  if (!kIsWeb &&
+      [
+        TargetPlatform.linux,
+        TargetPlatform.macOS,
+        TargetPlatform.windows,
+      ].contains(defaultTargetPlatform)) {
     initializeWindow();
   }
 
