@@ -14,11 +14,10 @@ class ResponseWrapper {
   }
 }
 
-Map<String, String>? getHeader(bool withToken) {
-  if (withToken) {
-    return {"x-cicada-token": serverState.currentUser?.token ?? ""};
-  }
-  return null;
+Map<String, String> getTokenHeader(bool withToken) {
+  return {
+    "x-cicada-token": withToken ? serverState.currentUser?.token ?? "" : "",
+  };
 }
 
 Future<dynamic> handleResponse(Response<dynamic> response) async {
@@ -43,7 +42,28 @@ Future<dynamic> httpGet<Data>({
   final response = await dio.get(
     '${origin ?? serverState.currentServer!.origin}$path',
     queryParameters: query,
-    options: Options(headers: getHeader(withToken)),
+    options: Options(headers: getTokenHeader(withToken)),
+  );
+  return handleResponse(response);
+}
+
+Future<dynamic> httpPost<Data>({
+  required String path,
+  Map<String, String>? query,
+  Object? data,
+  bool withToken = false,
+  String? origin,
+}) async {
+  final response = await dio.post(
+    '${origin ?? serverState.currentServer!.origin}$path',
+    queryParameters: query,
+    data: data,
+    options: Options(
+      headers: {
+        ...getTokenHeader(withToken),
+        "content-type": "application/json",
+      },
+    ),
   );
   return handleResponse(response);
 }

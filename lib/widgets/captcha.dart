@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CaptchaWidget extends StatefulWidget {
-  final void Function({required Captcha captcha, required String input})
+  final Future<void> Function({required Captcha captcha, required String input})
   onContinue;
 
   const CaptchaWidget({super.key, required this.onContinue});
@@ -15,6 +15,7 @@ class CaptchaWidget extends StatefulWidget {
 class _CaptchaWidgetState extends State<CaptchaWidget> {
   Exception? exception;
   Captcha? captcha;
+  bool loading = false;
 
   late TextEditingController inputController;
 
@@ -56,27 +57,49 @@ class _CaptchaWidgetState extends State<CaptchaWidget> {
                   children: [
                     SvgPicture.string(captcha!.svg),
                     TextField(
+                      readOnly: loading,
                       controller: inputController,
                       decoration: InputDecoration(
                         label: Text("Captcha"),
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        final input = inputController.text;
-                        if (input.isEmpty) {
-                          ScaffoldMessenger.of(
-                            Navigator.of(context, rootNavigator: true).context,
-                          ).showSnackBar(
-                            SnackBar(content: Text("Please enter captcha")),
-                          );
-                          return;
-                        }
-                        widget.onContinue(captcha: captcha!, input: input);
-                      },
-                      child: Text("Continue"),
-                    ),
+                    loading
+                        ? CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () async {
+                              final input = inputController.text;
+                              if (input.isEmpty) {
+                                ScaffoldMessenger.of(
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).context,
+                                ).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Please enter captcha"),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              setState(() {
+                                loading = true;
+                              });
+                              try {
+                                await widget.onContinue(
+                                  captcha: captcha!,
+                                  input: input,
+                                );
+                              } catch (e) {
+                                Navigator.pop(context);
+                              }
+                              setState(() {
+                                loading = false;
+                              });
+                            },
+                            child: Text("Continue"),
+                          ),
                   ],
                 )
         : Center(child: Text(exception.toString()));

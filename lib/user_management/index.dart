@@ -1,4 +1,5 @@
 import 'package:cicada/server/base/get_captcha.dart';
+import 'package:cicada/server/base/login.dart';
 import 'package:cicada/states/server.dart';
 import 'package:cicada/widgets/captcha.dart';
 import 'package:flutter/material.dart';
@@ -71,9 +72,20 @@ class _UserManagementState extends State<UserManagement> {
                   child: Center(
                     child: CaptchaWidget(
                       onContinue:
-                          ({required Captcha captcha, required String input}) {
-                            print(captcha);
-                            print(input);
+                          ({
+                            required Captcha captcha,
+                            required String input,
+                          }) async {
+                            try {
+                              final token = await login(
+                                username: username,
+                                password: password,
+                                captchaId: captcha.id,
+                                captchaValue: input,
+                              );
+                            } catch (e) {
+                              print(e);
+                            }
                           },
                     ),
                   ),
