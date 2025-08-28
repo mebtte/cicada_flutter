@@ -7,7 +7,6 @@ import 'dart:convert';
 class User {
   String token;
   String? avatar;
-  int createMusicMaxAmount;
   String id;
   bool twoFAEnabled;
   String username;
@@ -16,7 +15,6 @@ class User {
   User({
     required this.token,
     required this.avatar,
-    required this.createMusicMaxAmount,
     required this.id,
     required this.twoFAEnabled,
     required this.username,
@@ -26,7 +24,6 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
     token: json['token'],
     avatar: json['avatar'],
-    createMusicMaxAmount: json['createMusicMaxAmount'],
     id: json['id'],
     twoFAEnabled: json['twoFAEnabled'],
     username: json['username'],
@@ -36,7 +33,6 @@ class User {
   Map<String, dynamic> toJson() => {
     'token': token,
     'avatar': avatar,
-    'createMusicMaxAmount': createMusicMaxAmount,
     'id': id,
     'twoFAEnabled': twoFAEnabled,
     'username': username,

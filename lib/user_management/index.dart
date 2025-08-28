@@ -1,6 +1,8 @@
+import 'package:cicada/server/api/get_profile.dart';
 import 'package:cicada/server/base/get_captcha.dart';
 import 'package:cicada/server/base/login.dart';
 import 'package:cicada/states/server.dart';
+import 'package:cicada/utils/prefix_server_origin.dart';
 import 'package:cicada/widgets/captcha.dart';
 import 'package:flutter/material.dart';
 
@@ -83,6 +85,18 @@ class _UserManagementState extends State<UserManagement> {
                                 captchaId: captcha.id,
                                 captchaValue: input,
                               );
+                              final profile = await getProfile(token);
+                              serverState.addUser(
+                                User(
+                                  token: token,
+                                  avatar: prefixServerOrigin(profile.avatar),
+                                  id: profile.id,
+                                  twoFAEnabled: profile.twoFAEnabled,
+                                  username: profile.username,
+                                  nickname: profile.nickname,
+                                ),
+                              );
+                              Navigator.pop(context);
                             } catch (e) {
                               print(e);
                             }

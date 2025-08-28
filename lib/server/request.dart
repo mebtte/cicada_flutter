@@ -1,3 +1,4 @@
+import 'package:cicada/constants/index.dart';
 import 'package:cicada/states/server.dart';
 import 'package:dio/dio.dart';
 
@@ -16,7 +17,7 @@ class ResponseWrapper {
 
 Map<String, String> getTokenHeader(bool withToken) {
   return {
-    "x-cicada-token": withToken ? serverState.currentUser?.token ?? "" : "",
+    TOKEN_HEADER_KEY: withToken ? serverState.currentUser?.token ?? "" : "",
   };
 }
 
@@ -38,11 +39,14 @@ Future<dynamic> httpGet<Data>({
   Map<String, String>? query,
   bool withToken = false,
   String? origin,
+  Map<String, String>? headers,
 }) async {
   final response = await dio.get(
     '${origin ?? serverState.currentServer!.origin}$path',
     queryParameters: query,
-    options: Options(headers: getTokenHeader(withToken)),
+    options: Options(
+      headers: {...getTokenHeader(withToken), ...(headers ?? {})},
+    ),
   );
   return handleResponse(response);
 }
