@@ -1,3 +1,4 @@
+import 'package:cicada/pages/home/index.dart';
 import 'package:cicada/server_management/index.dart';
 import 'package:cicada/user_management/index.dart';
 import 'package:cicada/states/server.dart';
@@ -9,7 +10,7 @@ class AppContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('Hello World!')));
+    return MaterialApp(initialRoute: '/', routes: {'/': (context) => Home()});
   }
 }
 
