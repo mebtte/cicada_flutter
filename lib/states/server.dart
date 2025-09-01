@@ -1,7 +1,6 @@
 import 'package:cicada/extensions/list.dart';
+import 'package:cicada/utils/preference.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../constants/storage.dart';
 import 'dart:convert';
 
 class User {
@@ -94,8 +93,7 @@ class ServerState extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
-    final preference = await SharedPreferences.getInstance();
-    final serverString = preference.getString(StorageKey.SERVER);
+    final serverString = preference.instance.getString(StorageKey.SERVER);
     if (serverString != null) {
       final Map<String, dynamic> server = jsonDecode(serverString);
       final undecodedServerList =
@@ -151,9 +149,8 @@ class ServerState extends ChangeNotifier {
   }
 
   void saveOnChange() {
-    addListener(() async {
-      final preference = await SharedPreferences.getInstance();
-      preference.setString(StorageKey.SERVER, jsonEncode(this));
+    addListener(() {
+      preference.instance.setString(StorageKey.SERVER, jsonEncode(this));
     });
   }
 }

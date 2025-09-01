@@ -1,3 +1,4 @@
+import 'package:cicada/utils/preference.dart';
 import 'package:flutter/foundation.dart'
     show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:audio_service/audio_service.dart';
@@ -13,6 +14,7 @@ final getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await preference.initialize();
 
   if (!kIsWeb &&
       [
