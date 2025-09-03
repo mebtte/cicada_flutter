@@ -1,9 +1,9 @@
-import 'package:cicada/server/api/get_profile.dart';
-import 'package:cicada/server/base/get_captcha.dart';
-import 'package:cicada/server/base/login.dart';
-import 'package:cicada/states/server.dart';
-import 'package:cicada/utils/prefix_server_origin.dart';
-import 'package:cicada/widgets/captcha.dart';
+import '../../server/api/get_profile.dart';
+import '../../server/base/get_captcha.dart';
+import '../../server/base/login.dart';
+import '../../states/server.dart';
+import '../../utils/prefix_server_origin.dart';
+import '../../widgets/captcha.dart';
 import 'package:flutter/material.dart';
 
 class UserManagement extends StatefulWidget {

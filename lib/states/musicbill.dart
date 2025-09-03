@@ -1,13 +1,14 @@
-import 'package:cicada/server/api/get_musicbill_list.dart';
+import '../server/api/get_musicbill_list.dart';
 import 'package:flutter/material.dart';
 
 class Musicbill {
   String id;
+  String name;
 
-  Musicbill({required this.id});
+  Musicbill({required this.id, required this.name});
 }
 
-class _MusicbillState extends ChangeNotifier {
+class MusicbillState extends ChangeNotifier {
   bool loading = false;
   Exception? exception;
   List<Musicbill> musicbillList = [];
@@ -19,7 +20,9 @@ class _MusicbillState extends ChangeNotifier {
 
     try {
       final data = await getMusicbillList();
-      musicbillList = data.map((m) => Musicbill(id: m.id)).toList();
+      musicbillList = data
+          .map((m) => Musicbill(id: m.id, name: m.name))
+          .toList();
     } catch (e) {
       exception = e as Exception;
     }
@@ -28,4 +31,4 @@ class _MusicbillState extends ChangeNotifier {
   }
 }
 
-final musicbillState = _MusicbillState();
+final musicbillState = MusicbillState();

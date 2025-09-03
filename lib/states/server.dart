@@ -1,5 +1,5 @@
-import 'package:cicada/extensions/list.dart';
-import 'package:cicada/utils/preference.dart';
+import '../extensions/list.dart';
+import '../utils/preference.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 

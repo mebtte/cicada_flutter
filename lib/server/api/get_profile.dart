@@ -1,5 +1,5 @@
-import 'package:cicada/constants/index.dart';
-import 'package:cicada/server/request.dart';
+import '../../constants/index.dart';
+import '../../server/request.dart';
 
 class Profile {
   final String id;

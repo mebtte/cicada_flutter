@@ -1,4 +1,4 @@
-import 'package:cicada/server/request.dart';
+import '../request.dart';
 
 Future<String> login({
   required String username,

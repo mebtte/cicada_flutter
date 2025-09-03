@@ -1,10 +1,11 @@
-import 'package:cicada/pages/home/index.dart';
-import 'package:cicada/server_management/index.dart';
-import 'package:cicada/states/musicbill.dart';
-import 'package:cicada/user_management/index.dart';
-import 'package:cicada/states/server.dart';
+import './pages/home/index.dart';
+import './server_management/index.dart';
+import './states/musicbill.dart' as musicbill_state;
+import './user_management/index.dart';
+import './states/server.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './pages/musicbill/index.dart' as musicbill_page;
 
 class AppContent extends StatefulWidget {
   const AppContent({super.key});
@@ -17,14 +18,22 @@ class _AppContentState extends State<AppContent> {
   @override
   void initState() {
     super.initState();
-    musicbillState.reloadMusicbillList(silence: false);
+    musicbill_state.musicbillState.reloadMusicbillList(silence: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: musicbillState)],
-      child: MaterialApp(initialRoute: '/', routes: {'/': (context) => Home()}),
+      providers: [
+        ChangeNotifierProvider.value(value: musicbill_state.musicbillState),
+      ],
+      child: MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Home(),
+          "/musicbill": (context) => musicbill_page.Musicbill(),
+        },
+      ),
     );
   }
 }

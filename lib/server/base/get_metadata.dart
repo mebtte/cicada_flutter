@@ -1,5 +1,5 @@
-import 'package:cicada/server/request.dart';
-import 'package:cicada/states/server.dart';
+import '../request.dart';
+import '../../states/server.dart';
 
 class Metadata {
   final String hostname;

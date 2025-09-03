@@ -1,4 +1,4 @@
-import 'package:cicada/server/base/get_captcha.dart';
+import '../server/base/get_captcha.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

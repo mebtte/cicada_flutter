@@ -1,12 +1,13 @@
-import 'package:cicada/server/request.dart';
+import '../request.dart';
 
 class Musicbill {
   final String id;
+  final String name;
 
-  Musicbill({required this.id});
+  Musicbill({required this.id, required this.name});
 
   factory Musicbill.fromJSON(Map<String, dynamic> json) {
-    return Musicbill(id: json['id']);
+    return Musicbill(id: json['id'], name: json['name']);
   }
 }
 

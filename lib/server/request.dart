@@ -1,5 +1,5 @@
-import 'package:cicada/constants/index.dart';
-import 'package:cicada/states/server.dart';
+import '../constants/index.dart';
+import '../states/server.dart';
 import 'package:dio/dio.dart';
 
 final dio = Dio();

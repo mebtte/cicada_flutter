@@ -1,7 +1,7 @@
 import 'dart:collection';
-import 'package:cicada/extensions/list.dart';
-import 'package:cicada/server/base/get_metadata.dart';
-import 'package:cicada/states/server.dart';
+import '../extensions/list.dart';
+import '../server/base/get_metadata.dart';
+import '../states/server.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
