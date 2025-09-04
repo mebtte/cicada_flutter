@@ -1,19 +1,65 @@
-import 'package:cicada/states/musicbill.dart';
+import '../../utils/get_musicbill_by_id.dart';
+import '../../states/musicbill.dart' as musicbill_state;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class Musicbill extends StatelessWidget {
+class Musicbill extends StatefulWidget {
   const Musicbill({super.key});
 
   @override
+  State<Musicbill> createState() => _MusicbillState();
+}
+
+class _MusicbillState extends State<Musicbill> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final id =
+          (ModalRoute.of(context)!.settings.arguments
+              as Map<String, String>)['id']!;
+      final musicbill = musicbill_state.musicbillState.musicbillList.firstWhere(
+        (m) => m.id == id,
+      );
+      if (musicbill.status != musicbill_state.MusicbillStatus.LOADING) {
+        Future.delayed(
+          Duration.zero,
+          () => musicbill_state.musicbillState.reloadMusicbill(
+            id: id,
+            silence:
+                musicbill.status == musicbill_state.MusicbillStatus.SUCCESSFUL,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final argument =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-    final musicbillList = context.watch<MusicbillState>().musicbillList;
-    final musicbill = musicbillList.firstWhere((m) => m.id == argument['id']);
+    final id =
+        (ModalRoute.of(context)!.settings.arguments
+            as Map<String, String>)['id']!;
+    final musicbill = useMusicbillById(context, id);
     return Scaffold(
       appBar: AppBar(title: Text(musicbill.name)),
-      body: Text("musicbill"),
+      body: Column(
+        children: [
+          if (musicbill.musicList.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: musicbill.musicList.length,
+                itemBuilder: (context, index) {
+                  final music = musicbill.musicList[index];
+                  return ListTile(
+                    title: Text(music.name),
+                    onTap: () {
+                      print(music);
+                    },
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
