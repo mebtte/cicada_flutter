@@ -1,3 +1,6 @@
+import 'package:cicada/states/playlist.dart';
+import 'package:cicada/states/playqueue.dart';
+
 import './pages/home/index.dart';
 import './server_management/index.dart';
 import './states/musicbill.dart' as musicbill_state;
@@ -26,6 +29,8 @@ class _AppContentState extends State<AppContent> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: musicbill_state.musicbillState),
+        ChangeNotifierProvider.value(value: playlistState),
+        ChangeNotifierProvider.value(value: playqueueState),
       ],
       child: MaterialApp(
         initialRoute: '/',
